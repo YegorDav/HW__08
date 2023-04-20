@@ -34,11 +34,11 @@ def get_birthdays_per_week(users):
 
 
 if __name__ == "__main__":
-    users = [{"name": "Anton", "birthday": "15, 3, 1991"},
-             {"name": "Kola", "birthday": "14, 3, 1992"},
-             {"name": "Anton", "birthday": "13, 3, 1993"},
-             {"name": "Ivan", "birthday": "12, 3, 1994"},
-             {"name": "Vano", "birthday": "11, 3, 1995"},
-             {"name": "Olga", "birthday": "15, 3, 1994"},
-             {"name": "Anna", "birthday": "15, 3, 1993"}]
+    users = [{"name": "Anton", "birthday": day=15, month=3, year=1991},
+             {"name": "Kola", "birthday": day=14, month=3, year=1992},
+             {"name": "Anton", "birthday": day=13, month=3, year=1993},
+             {"name": "Ivan", "birthday": day=12, month=3, year=1994},
+             {"name": "Vano", "birthday": day=11, month=3, year=1995},
+             {"name": "Olga", "birthday": day=15, month=3, year=1994},
+             {"name": "Anna", "birthday": day=15, month=3, year=1993}]
     get_birthdays_per_week(users)
