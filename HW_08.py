@@ -2,8 +2,11 @@ from datetime import datetime, timedelta
 
 def get_birthdays_per_week(users):
     # Визначаємо поточний день та день наступного понеділка
-    today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+    today = datetime.now().date()
     next_monday = today + timedelta(days=(7 - today.weekday()))
+
+    start_period = next_monday - timedelta(days=2)
+    end_period = next_monday + timedelta(days=4)
 
     # Створюємо словник, де ключі - дні тижня, значення - список ім'янинників на цей день
     birthdays = {}
@@ -14,19 +17,17 @@ def get_birthdays_per_week(users):
     # Додаємо ім'янинників відповідно до їх дня народження
     for user in users:
         name = user['name']
-        birthday = user['birthday'].replace(year=today.year)
-        if birthday < today:
-            # Якщо день народження вже був у цьому році, додаємо наступний рік
-            birthday = birthday.replace(year=today.year + 1)
-        day_diff = (birthday - today).days
-        if day_diff < 7:
-            # Якщо день народження відбувається протягом наступного тижня, додаємо до списку ім'янинників на цей день
-            birthday_day = next_monday + timedelta(days=day_diff)
-            birthdays[birthday_day.strftime('%A')].append(name)
-        else:
-            # Якщо день народження не відбувається протягом наступного тижня, не додаємо його до списку
-            pass
+        birthday = user['birthday'].replace(year=today.year).date()
 
+        # Період днів народження
+        if start_period <= birthday <= end_period:
+            # Якщо день народження відбувається протягом вихідних, додаємо до списку ім'янинників на цей понеділок
+            day_of_week = birthday.strftime('%A')
+            if day_of_week in ("Sunday", "Saturday"):
+                birthdays["Monday"].append(name)
+            else:
+                birthdays[day_of_week].append(name)
+                
     # Виводимо список ім'янинників на кожен день тижня
     for day, names in birthdays.items():
         if names:
@@ -34,11 +35,11 @@ def get_birthdays_per_week(users):
 
 
 if __name__ == "__main__":
-    users = [{"name": "Anton", "birthday": datetime(day=15, month=4, year=1991)},
-             {"name": "Kola", "birthday": datetime(day=14, month=4, year=1992)},
-             {"name": "Anton", "birthday": datetime(day=13, month=4, year=1993)},
-             {"name": "Ivan", "birthday": datetime(day=12, month=4, year=1994)},
-             {"name": "Vano", "birthday": datetime(day=11, month=4, year=1995)},
+    users = [{"name": "Anton", "birthday": datetime(day=25, month=4, year=1994)},
+             {"name": "Kola", "birthday": datetime(day=26, month=4, year=1995)},
+             {"name": "Andrew", "birthday": datetime(day=22, month=4, year=1994)},
+             {"name": "Ivan", "birthday": datetime(day=21, month=4, year=1993)},
+             {"name": "Vano", "birthday": datetime(day=23, month=4, year=1995)},
              {"name": "Olga", "birthday": datetime(day=12, month=4, year=1994)},
              {"name": "Anna", "birthday": datetime(day=13, month=4, year=1993)}]
     get_birthdays_per_week(users)
